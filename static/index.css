@@ -46,7 +46,7 @@ tr:hover {
 }
 
 tr td:last-child {
-    width: 160px; /* 设置最后一个td的宽度为100像素 */
+    width: 200px; /* 设置最后一个td的宽度为100像素 */
 }
 
 
@@ -54,21 +54,17 @@ a {
     text-decoration: none;
 }
 
-.netspeed-text {
-    display: inline-block;
-    padding: 6px 12px;
-    font-size: 14px;
-    font-weight: normal;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer;
-    background-image: none;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    color: #fff;
-    background-color: #4ba0cc;
+.upload-svg{
+    box-shadow: 0 0 10px 10px #fff;
+    border-radius: 10px;
+    background: #fff;
 }
 
+.netspeed-text {
+    color: #454545;
+}
+
+/*
 
 .btn {
     display: inline-block;
@@ -86,7 +82,7 @@ a {
     border-radius: 4px;
     color: #fff;
     background-color: #5cb85c;
-    /*border-color: #4cae4c;*/
+    !*border-color: #4cae4c;*!
 }
 
 .btn:hover,
@@ -122,13 +118,25 @@ a {
     border-color: #1682a9;
 }
 
+.btn-share {
+    background-color: #4ba0cc;
+    border-color: #3ba0cc;
+}
+
+.btn-share:hover,
+.btn-share:focus,
+.btn-share:active {
+    background-color: #2682a9;
+    border-color: #1682a9;
+}
+*/
+
 
 .crumbs {
     display: flex;
     flex-direction: row;
     font-weight: bold;
     justify-content: space-between
-
 }
 
 .crumbs * {
@@ -137,4 +145,9 @@ a {
 
 .crumbs div a {
     color: #454545;
+}
+
+
+.option {
+    padding-right: 16px;
 }

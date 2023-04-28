@@ -12,6 +12,8 @@ import os
 # import re
 import shutil
 import time
+import uuid
+from urllib.parse import quote
 from flask_httpauth import HTTPBasicAuth  # pip install flask_httpauth
 from flask import Flask, Response, render_template, request, jsonify
 
@@ -23,6 +25,8 @@ USER_LIST = [('root', 'root.123')]  # 用户列表
 
 RELATIVE_PATH = r'./FILES'
 BASE_DIR = os.path.abspath(RELATIVE_PATH)  # 用于浏览的文件夹
+
+SHARE_DICT = {}
 
 try:
     with open(os.path.abspath('./users.json'), 'r', encoding='utf8') as u:
@@ -59,10 +63,44 @@ class Tools:
             return '文件夹'
         return os.path.splitext(path)[1].upper().strip('.') + '文件'
 
+    @staticmethod
+    def file_response(path):
+        def send_chunk():  # 流式读取
+            with open(path, 'rb') as target_file:
+                while True:
+                    chunk = target_file.read(20 * 1024 * 1024)  # 每次读取20M
+                    if not chunk:
+                        break
+                    yield chunk
 
-@app.route('/public/<path:index_path>')
-def public_links(index_path=''):
-    return 'ok'
+        filename = quote(os.path.basename(path).encode("utf-8"))
+        response = Response(send_chunk(), content_type='application/octet-stream')
+        response.headers["Content-Disposition"] = f'attachment; filename={filename}'
+        response.headers["Content-Length"] = str(os.path.getsize(path))
+        return response
+
+
+@app.route('/share', methods=['POST'])
+@app.route('/share/<string:shareid>')
+def share_links(shareid=None):
+    if request.method == 'GET':
+        path = SHARE_DICT.get(shareid)  # 根据分享id获取文件路径
+        if path and os.path.isfile(path):
+            return Tools.file_response(path)
+        return 'Link has expired'
+
+    else:
+        # 返回下载链接
+        data = request.json
+        file_path = os.path.join(BASE_DIR, data['dir'].strip('/'), data['file'])
+        for k, v in SHARE_DICT.items():  # 遍历字典查找是否已经分享过
+            if v == file_path:
+                return jsonify({'shareid': k})
+
+        shareid = uuid.uuid1().hex
+        SHARE_DICT[shareid] = file_path
+
+        return jsonify({'shareid': shareid})
 
 
 @app.route('/')
@@ -88,18 +126,7 @@ def file_view(_index_path=''):
         return render_template('index.html', dir_content=dir_content, index_of=index_of)
 
     elif os.path.isfile(path):
-        def send_chunk():  # 流式读取
-            with open(path, 'rb') as target_file:
-                while True:
-                    chunk = target_file.read(20 * 1024 * 1024)  # 每次读取20M
-                    if not chunk:
-                        break
-                    yield chunk
-
-        response = Response(send_chunk(), content_type='application/octet-stream')
-        response.headers["Content-Disposition"] = f'attachment'
-        response.headers["Content-Length"] = str(os.path.getsize(path))
-        return response
+        return Tools.file_response(path)
     else:
         if request.args.get('opt') == 'newfolder':
             os.makedirs(path)

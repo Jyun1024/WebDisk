@@ -66,7 +66,8 @@ function CreateFileElement(file) {
 
     // 为新的tr元素添加CSS样式
     // newRow.style.border = '2px dashed #7e7e76'
-    newRow.style.background = '#7e7e76'
+    newRow.style.background = '#bebebb'
+    // newRow.style.boxShadow = '0px 0px 4px 0px rgb(126, 126, 118)'
 
     // 在新的tr元素中插入两个新的td元素
     newRow.insertCell().textContent = `${file.name}`;
@@ -77,24 +78,25 @@ function CreateFileElement(file) {
     let optionCell = newRow.insertCell()
 
     let uploadBtn = document.createElement('a')
-    uploadBtn.text = '开始上传'
-    uploadBtn.classList.add('btn', 'btn-upload')
+    // uploadBtn.text = '开始上传'
+    uploadBtn.innerHTML = '<img class="upload-svg" src="/static/option-svg/upload.svg">'
+    // uploadBtn.classList.add('btn', 'btn-upload')
     uploadBtn.href = "javascript:void(0)"
     uploadBtn.onclick = () => {
-        console.log('上传文件')
+        // console.log('上传文件')
         uploadFile(file, updateProgress)
         uploadBtn.onclick = null
         uploadBtn.text = '上传中'
-        uploadBtn.classList.remove('btn-upload', 'btn')
+        // uploadBtn.classList.remove('btn-upload', 'btn')
         uploadBtn.classList.add('netspeed-text')
     }
     optionCell.appendChild(uploadBtn)
 
     function updateProgress(progress, netspeed = 0) {
-        newRow.style.background = `linear-gradient(to right, #fff 0%, #fff ${progress * 100}%, #7e7e76 ${progress * 100}%, #7e7e76 100%)`
+        newRow.style.background = `linear-gradient(to right, #fff 0%, #fff ${progress * 100}%, #bebebb ${progress * 100}%, #bebebb 100%)`
         uploadBtn.text = `上传中 ${formatSize(netspeed)}/s`
-        if (progress === 1) {
-            optionCell.innerHTML = '<a href="javascript:void(0)" class="btn">完成</a>'
+        if (progress === 1) { // 上传完毕
+            optionCell.innerHTML = '<img src="/static/option-svg/upload-sucess.svg">'
             newRow.style.cssText = null;
         }
     }
@@ -217,10 +219,27 @@ function mkdir() {
             if (msg === 'ok') location.reload()
         });
     }
+}
+
+function getShareLink(item) {
+    let itemId = item.getAttribute('data-item-id')
+    fetch('/share', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            'file': itemId,
+            'dir': decodeURIComponent(window.location.pathname)
+        })
+    }).then(response => response.json()).then(data => {
+        const shareLink = `${window.location.origin}/share/${data.shareid}`
+        const text = prompt(`${itemId}\n点击确定 复制分享链接 `, shareLink)
+        if (text) {
+            copyText(text)
+        }
+    }).catch(error => console.error(error));
 
 
 }
-
 
 function formatSize(b) {
     if (b < 1024) {
@@ -232,4 +251,14 @@ function formatSize(b) {
     } else {
         return (b / 1073741824).toFixed(2) + " GB";
     }
+}
+
+
+function copyText(text) {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
 }

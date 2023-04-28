@@ -5,6 +5,8 @@
     <title>文件传输</title>
     <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="/static/index.css">
+    <link rel="preload" href="/static/option-svg/upload.svg" as="image">
+    <link rel="preload" href="/static/option-svg/upload-sucess.svg" as="image">
 </head>
 <body>
 <div id="container">
@@ -46,13 +48,26 @@
                 <td>{{ file.size }}</td>
                 <td>{{ file.modify_time }}</td>
                 <td>
-                    <a href="{{ file.href }}" class="btn">
-                        {% if file.type == "文件夹" %}打开{% else %}下载{% endif %}
+                    <a href="{{ file.href }}" class="option">
+                        {% if file.type == "文件夹" %}
+                            <img src="/static/option-svg/folder-open.svg" alt="">
+                        {% else %}
+                            <img src="/static/option-svg/download.svg" alt="">
+                        {% endif %}
                     </a>
-                    <a class="btn btn-danger" href="javascript:void(0)" data-item-id="{{ file.href }}"
-                       onclick="deleteItem(this)">删除</a>
-                </td>
 
+                    {% if file.type != "文件夹" %}
+                        <a class="option" href="javascript:void(0)" data-item-id="{{ file.href }}"
+                           onclick="getShareLink(this)">
+                            <img src="/static/option-svg/share.svg" alt="">
+                        </a>
+                    {% endif %}
+
+                    <a class="option" href="javascript:void(0)" data-item-id="{{ file.href }}"
+                       onclick="deleteItem(this)">
+                        <img src="/static/option-svg/delete.svg" alt="">
+                    </a>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
