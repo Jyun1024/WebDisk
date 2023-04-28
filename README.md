@@ -1,2 +1,2 @@
 # WebDisk
-一个简易的个人网盘，由flask驱动。
+基于python Flask的简易个人网盘服务 使用Flask基本身份验证
