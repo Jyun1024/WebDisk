@@ -1,3 +1,11 @@
+/*
+* time:     2023/4/28 14:58
+* author:   Jyun
+* version:  V 0.1
+* file:     index.js
+* blog:     https://ctrlcv.blog.csdn.net
+* */
+
 const container = document.querySelector('#container');// 获取拖动上传区域
 const uploadDiv = document.getElementById("upload-div");
 const uploadInput = document.getElementById("upload-input");
