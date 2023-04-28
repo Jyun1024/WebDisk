@@ -24,8 +24,11 @@ USER_LIST = [('root', 'root.123')]  # 用户列表
 RELATIVE_PATH = r'./FILES'
 BASE_DIR = os.path.abspath(RELATIVE_PATH)  # 用于浏览的文件夹
 
-with open(os.path.abspath('./user.json'), 'r', encoding='utf8') as u:
-    USER_LIST.extend(json.loads(u.read()))
+try:
+    with open(os.path.abspath('./users.json'), 'r', encoding='utf8') as u:
+        USER_LIST.extend(json.loads(u.read()))
+except FileNotFoundError:
+    pass
 
 
 class Tools:
@@ -97,11 +100,6 @@ def file_view(_index_path=''):
         response.headers["Content-Disposition"] = f'attachment'
         response.headers["Content-Length"] = str(os.path.getsize(path))
         return response
-
-    # response = make_response(send_chunk())
-    # response.headers['Content-Disposition'] = 'attachment; filename={}'.format(os.path.basename(path))
-    # response.headers['Content-Type'] = 'application/octet-stream'
-    # return response
     else:
         if request.args.get('opt') == 'newfolder':
             os.makedirs(path)
@@ -168,5 +166,3 @@ def delete():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8020, debug=True)
-
-#  基于python Flask 的简易文件预览下载服务 含Flask基本身份验证
