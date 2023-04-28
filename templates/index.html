@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件传输</title>
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/static/index.css">
+</head>
+<body>
+<div id="container">
+    <div class="crumbs">
+        <div>
+            <a href="../">◀</a>
+            <a href="javascript:void(0)" onclick="mkdir()">+</a>
+            <text> Location ：{{ index_of or '~' }} </text>
+        </div>
+        <div>
+            <!--⮁<text id="network-speed">0KB</text>/s-->
+            <!--<text>🠙 198KB/s</text>
+            <text>🠛 168KB/s</text>-->
+        </div>
+        <div id="upload-div">
+            拖入或点击此处上传文件
+        </div>
+        <input type="file" id="upload-input">
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>文件名</th>
+            <th>类型</th>
+            <th>大小</th>
+            <th>修改日期</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for file in dir_content %}
+            <tr>
+                {% if file.type == "文件夹" %}
+                    <td><a href="{{ file.href }}">{{ file.href }}</a></td>
+                {% else %}
+                    <td>{{ file.href }}</td>
+                {% endif %}
+                <td>{{ file.type }}</td>
+                <td>{{ file.size }}</td>
+                <td>{{ file.modify_time }}</td>
+                <td>
+                    <a href="{{ file.href }}" class="btn">
+                        {% if file.type == "文件夹" %}打开{% else %}下载{% endif %}
+                    </a>
+                    <a class="btn btn-danger" href="javascript:void(0)" data-item-id="{{ file.href }}"
+                       onclick="deleteItem(this)">删除</a>
+                </td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script src="/static/index.js"></script>
+</body>
+</html>
