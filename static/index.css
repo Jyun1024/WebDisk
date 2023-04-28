@@ -5,10 +5,17 @@ body {
     color: #454545;
 }
 
+
 #container {
     margin: 0 auto;
     padding: 20px;
     min-height: 95vb;
+}
+
+#container > div {
+    border-radius: 16px;
+    border: 1px solid #ddd;
+    padding: 8px;
 }
 
 #container.hover {
@@ -54,7 +61,7 @@ a {
     text-decoration: none;
 }
 
-.upload-svg{
+.upload-svg {
     box-shadow: 0 0 10px 10px #fff;
     border-radius: 10px;
     background: #fff;
