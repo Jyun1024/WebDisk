@@ -9,6 +9,7 @@ body {
     margin: 0 auto;
     padding: 20px;
     min-height: 95vb;
+    transition: 0.5s;
 }
 
 #container > div {
@@ -29,6 +30,10 @@ body {
     display: none;
 }
 
+#location {
+    border-left: 1px solid #ddd;
+}
+
 table {
     border-collapse: collapse;
     width: 100%;
@@ -41,6 +46,11 @@ th, td {
     text-align: left;
     padding: 8px;
     border-bottom: 1px solid #ddd;
+}
+
+td > div {
+    display: flex;
+    align-items: center;
 }
 
 th {

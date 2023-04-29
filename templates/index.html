@@ -47,7 +47,7 @@
                         </g>
                     </svg>
                 </div>
-                <div>
+                <div id="location">
                     位置 ：首页 {% if index_of %} > {{ index_of }} {% else %} {{ index_of }} {% endif %}
                 </div>
                 {#        <text></text>#}
@@ -71,11 +71,28 @@
             <tbody>
             {% for file in dir_content %}
                 <tr>
-                    {% if file.type == "文件夹" %}
-                        <td><a href="{{ file.href }}">{{ file.href }}</a></td>
-                    {% else %}
-                        <td>{{ file.href }}</td>
-                    {% endif %}
+                    <td>
+                        <div>
+                            {% if file.type == "文件夹" %}
+                                <svg width="20" height="20" viewBox="0 0 48 48" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 9C5 7.89543 5.89543 7 7 7H19L24 13H41C42.1046 13 43 13.8954 43 15V41C43 42.1046 42.1046 43 41 43H7C5.89543 43 5 42.1046 5 41V9Z"
+                                          fill="none" stroke="#454545" stroke-width="3" stroke-linejoin="round"/>
+                                </svg>&nbsp;<a href="{{ file.href }}">{{ file.href[:-1] }}</a>
+
+                            {% else %}
+
+                                <svg width="20" height="20" viewBox="0 0 48 48" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10 44H38C39.1046 44 40 43.1046 40 42V14H30V4H10C8.89543 4 8 4.89543 8 6V42C8 43.1046 8.89543 44 10 44Z"
+                                          fill="none" stroke="#454545" stroke-width="3" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M30 4L40 14" stroke="#454545" stroke-width="3" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>&nbsp;{{ file.href }}
+                            {% endif %}
+                        </div>
+                    </td>
                     <td>{{ file.type }}</td>
                     <td>{{ file.size }}</td>
                     <td>{{ file.modify_time }}</td>
