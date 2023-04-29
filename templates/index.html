@@ -10,70 +10,101 @@
 </head>
 <body>
 <div id="container">
-<div>
-       <div class="crumbs">
-        <div>
-            <a href="../">◀</a>
-            <a href="javascript:void(0)" onclick="mkdir()">+</a>
-            <text> Location ：{{ index_of or '~' }} </text>
+    <div>
+        <div class="topbar">
+            <div class="toolsbar">
+                <a href="../">
+                    <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.9998 8L6 14L12.9998 21" stroke="#454545" stroke-width="3" stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                        <path d="M6 14H28.9938C35.8768 14 41.7221 19.6204 41.9904 26.5C42.2739 33.7696 36.2671 40 28.9938 40H11.9984"
+                              stroke="#454545" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+
+                <a href="javascript:void(0)" onclick="mkdir()">
+                    <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 8C5 6.89543 5.89543 6 7 6H19L24 12H41C42.1046 12 43 12.8954 43 14V40C43 41.1046 42.1046 42 41 42H7C5.89543 42 5 41.1046 5 40V8Z"
+                              fill="none" stroke="#454545" stroke-width="3" stroke-linejoin="round"/>
+                        <path d="M18 27H30" stroke="#454545" stroke-width="3" stroke-linecap="round"/>
+                        <path d="M24 21L24 33" stroke="#454545" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </a>
+
+                <div id="upload-div">
+                    <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <mask id="icon-b8ef6227f10b972" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48"
+                              style="mask-type: alpha">
+                            <path d="M48 0H0V48H48V0Z" fill="#454545"/>
+                        </mask>
+                        <g mask="url(#icon-b8ef6227f10b972)">
+                            <path d="M6 24.0083V42H42V24" stroke="#454545" stroke-width="3" stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                            <path d="M33 15L24 6L15 15" stroke="#454545" stroke-width="3" stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                            <path d="M23.9917 32V6" stroke="#454545" stroke-width="3" stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                        </g>
+                    </svg>
+                </div>
+                <div>
+                    位置 ：首页 {% if index_of %} > {{ index_of }} {% else %} {{ index_of }} {% endif %}
+                </div>
+                {#        <text></text>#}
+
+                <input type="file" id="upload-input">
+            </div>
+            <div>
+                Version：1.2
+            </div>
         </div>
-        <div>
-            <!--⮁<text id="network-speed">0KB</text>/s-->
-            <!--<text>🠙 198KB/s</text>
-            <text>🠛 168KB/s</text>-->
-        </div>
-        <div id="upload-div">
-            拖入或点击此处上传文件
-        </div>
-        <input type="file" id="upload-input">
-    </div>
-    <table>
-        <thead>
-        <tr>
-            <th>文件名</th>
-            <th>类型</th>
-            <th>大小</th>
-            <th>修改日期</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for file in dir_content %}
+        <table>
+            <thead>
             <tr>
-                {% if file.type == "文件夹" %}
-                    <td><a href="{{ file.href }}">{{ file.href }}</a></td>
-                {% else %}
-                    <td>{{ file.href }}</td>
-                {% endif %}
-                <td>{{ file.type }}</td>
-                <td>{{ file.size }}</td>
-                <td>{{ file.modify_time }}</td>
-                <td>
-                    <a href="{{ file.href }}" class="option">
-                        {% if file.type == "文件夹" %}
-                            <img src="/static/option-svg/folder-open.svg" alt="">
-                        {% else %}
-                            <img src="/static/option-svg/download.svg" alt="">
-                        {% endif %}
-                    </a>
-
-                    {% if file.type != "文件夹" %}
-                        <a class="option" href="javascript:void(0)" data-item-id="{{ file.href }}"
-                           onclick="getShareLink(this)">
-                            <img src="/static/option-svg/share.svg" alt="">
-                        </a>
-                    {% endif %}
-
-                    <a class="option" href="javascript:void(0)" data-item-id="{{ file.href }}"
-                       onclick="deleteItem(this)">
-                        <img src="/static/option-svg/delete.svg" alt="">
-                    </a>
-                </td>
+                <th>文件名</th>
+                <th>类型</th>
+                <th>大小</th>
+                <th>修改日期</th>
+                <th>操作</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+            {% for file in dir_content %}
+                <tr>
+                    {% if file.type == "文件夹" %}
+                        <td><a href="{{ file.href }}">{{ file.href }}</a></td>
+                    {% else %}
+                        <td>{{ file.href }}</td>
+                    {% endif %}
+                    <td>{{ file.type }}</td>
+                    <td>{{ file.size }}</td>
+                    <td>{{ file.modify_time }}</td>
+                    <td>
+                        <a href="{{ file.href }}" class="option">
+                            {% if file.type == "文件夹" %}
+                                <img src="/static/option-svg/folder-open.svg" alt="">
+                            {% else %}
+                                <img src="/static/option-svg/download.svg" alt="">
+                            {% endif %}
+                        </a>
+
+                        {% if file.type != "文件夹" %}
+                            <a class="option" href="javascript:void(0)" data-item-id="{{ file.href }}"
+                               onclick="getShareLink(this)">
+                                <img src="/static/option-svg/share.svg" alt="">
+                            </a>
+                        {% endif %}
+
+                        <a class="option" href="javascript:void(0)" data-item-id="{{ file.href }}"
+                           onclick="deleteItem(this)">
+                            <img src="/static/option-svg/delete.svg" alt="">
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 </div>
 <script src="/static/index.js"></script>

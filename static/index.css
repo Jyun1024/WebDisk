@@ -5,7 +5,6 @@ body {
     color: #454545;
 }
 
-
 #container {
     margin: 0 auto;
     padding: 20px;
@@ -13,7 +12,7 @@ body {
 }
 
 #container > div {
-    border-radius: 16px;
+    border-radius: 8px;
     border: 1px solid #ddd;
     padding: 8px;
 }
@@ -71,87 +70,34 @@ a {
     color: #454545;
 }
 
-/*
-
-.btn {
-    display: inline-block;
-    padding: 6px 12px;
-    margin-bottom: 0;
-    font-size: 14px;
-    font-weight: normal;
-    line-height: 1.42857143;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer;
-    background-image: none;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    color: #fff;
-    background-color: #5cb85c;
-    !*border-color: #4cae4c;*!
-}
-
-.btn:hover,
-.btn:focus,
-.btn:active {
-    color: #fff;
-    background-color: #4cae4c;
-    border-color: #3e8e41;
-}
-
-.btn-danger {
-    background-color: #d9534f;
-    border-color: #d43f3a;
-}
-
-.btn-danger:hover,
-.btn-danger:focus,
-.btn-danger:active {
-    background-color: #c9302c;
-    border-color: #ac2925;
-}
-
-.btn-upload {
-    width: 85px;
-    background-color: #4ba0cc;
-    border-color: #3ba0cc;
-}
-
-.btn-upload:hover,
-.btn-upload:focus,
-.btn-upload:active {
-    background-color: #2682a9;
-    border-color: #1682a9;
-}
-
-.btn-share {
-    background-color: #4ba0cc;
-    border-color: #3ba0cc;
-}
-
-.btn-share:hover,
-.btn-share:focus,
-.btn-share:active {
-    background-color: #2682a9;
-    border-color: #1682a9;
-}
-*/
-
-
-.crumbs {
+.toolsbar {
     display: flex;
-    flex-direction: row;
-    font-weight: bold;
-    justify-content: space-between
+    /*flex-direction: row;*/
+    /*font-weight: bold;*/
+    /*justify-content: space-between*/
 }
 
-.crumbs * {
-    padding: 6px;
+
+.toolsbar {
+    padding-top: 6px;
+    padding-bottom: 6px;
 }
 
-.crumbs div a {
-    color: #454545;
+.toolsbar > * {
+    padding-left: 10px;
+    padding-right: 10px;
+    /*border: 1px solid #ddd;*/
+    /*color: #454545;*/
+    /*margin: 4px;*/
+    /*border-radius: 4px;*/
+    /*padding: 2px 4px 0 4px;*/
+
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 
