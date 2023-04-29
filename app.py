@@ -85,8 +85,10 @@ class Tools:
 def share_links(shareid=None):
     if request.method == 'GET':
         path = SHARE_DICT.get(shareid)  # 根据分享id获取文件路径
-        if path and os.path.isfile(path):
-            return Tools.file_response(path)
+        if path:
+            if os.path.isfile(path):
+                return Tools.file_response(path)
+            del SHARE_DICT[shareid]
         return 'Link has expired'
 
     else:
