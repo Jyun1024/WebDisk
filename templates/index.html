@@ -15,9 +15,14 @@
             <div class="toolsbar">
                 <a href="../"> {% include "back.svg" %} </a>
                 <a href="javascript:void(0)" onclick="mkdir()"> {% include "mkdir.svg" %} </a>
-                <div id="upload-div"> {% include "upload-file.svg" %} </div>
+                <!--<div id="upload-div"> {% include "upload-file.svg" %} </div>-->
+                <a href="javascript:void(0)" onclick="uploadInput.click()"> {% include "upload-file.svg" %} </a>
                 <div id="location">
-                    位置 ：首页 {% if index_of %} > {{ index_of }}{% endif %}
+                    {#                    文件 {% if index_of %} › {{ index_of }}{% endif %}#}
+                    <a href="/">文件</a>
+                    {% for text, href in index_of.items() %}
+                        &nbsp;›&nbsp;<a href="/{{ href }}/">{{ text }}</a>
+                    {% endfor %}
                 </div>
                 <input type="file" id="upload-input">
             </div>

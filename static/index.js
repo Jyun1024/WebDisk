@@ -7,19 +7,36 @@
 * */
 
 const container = document.querySelector('#container');// 获取拖动上传区域
-const uploadDiv = document.getElementById("upload-div");
+// const uploadDiv = document.getElementById("upload-div");
 const uploadInput = document.getElementById("upload-input");
 const filesList = document.querySelector('#container table tbody');// 获取文件列表区域
 // const netspeedNode = document.querySelector('#network-speed');// 获取网速显示text
+const allLinks = document.querySelectorAll('a');
 
 const CHUNK_SIZE = 1024 * 1024; // 每个分片的大小，这里设置为1MB
 
 let WORKLOAD = 0
 
 
-uploadDiv.addEventListener("click", () => {
-    uploadInput.click();
+// 遍历所有 a 标签，为其添加点击事件监听器
+allLinks.forEach(link => {
+    link.addEventListener('click', function (event) {
+        // 根据指定条件判断是否阻止跳转
+        if (WORKLOAD) {
+            // if (!confirm("此操作会打断正在进行的任务，是否继续？")) {
+            event.preventDefault(); // 阻止默认跳转行为
+            // }
+
+        }
+    });
 });
+
+
+// uploadDiv.addEventListener("click", () => {
+//     uploadInput.click();
+// });
+
+
 uploadInput.addEventListener("change", () => {
     const file = uploadInput.files[0];
     if (!file) return
@@ -81,14 +98,14 @@ function CreateFileElement(file) {
     newRow.insertCell().textContent = `${file.name}`;
     newRow.insertCell().textContent = `${file.name.split(".").pop().toUpperCase()}文件`;
     newRow.insertCell().textContent = formatSize(file.size);
-    newRow.insertCell().textContent = file.lastModifiedDate.toJSON().replace('T', ' ').substring(0,19);
+    newRow.insertCell().textContent = file.lastModifiedDate.toJSON().replace('T', ' ').substring(0, 19);
     // newRow.insertCell().textContent = file.lastModifiedDate.toLocaleString().replaceAll('/', '-');
     let optionCell = newRow.insertCell()
 
     let uploadBtn = document.createElement('a')
     // uploadBtn.text = '开始上传'
     uploadBtn.innerHTML = '<img class="upload-svg" src="/static/option-svg/upload.svg">'
-    // uploadBtn.classList.add('btn', 'btn-upload')
+    uploadBtn.classList.add('option')
     uploadBtn.href = "javascript:void(0)"
     uploadBtn.onclick = () => {
         // console.log('上传文件')
@@ -104,7 +121,7 @@ function CreateFileElement(file) {
         newRow.style.background = `linear-gradient(to right, #fff 0%, #fff ${progress * 100}%, #bebebb ${progress * 100}%, #bebebb 100%)`
         uploadBtn.text = `上传中 ${formatSize(netspeed)}/s`
         if (progress === 1) { // 上传完毕
-            optionCell.innerHTML = '<img src="/static/option-svg/upload-sucess.svg">'
+            uploadBtn.innerHTML = '<img src="/static/option-svg/upload-sucess.svg">'
             newRow.style.cssText = null;
         }
     }

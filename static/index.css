@@ -34,6 +34,11 @@ body {
     border-left: 1px solid #ddd;
 }
 
+#location a:last-child {
+    font-weight: bold;
+    /*font-size: 110%;*/
+}
+
 table {
     border-collapse: collapse;
     width: 100%;
@@ -63,12 +68,22 @@ tr:hover {
 
 tr td:last-child {
     width: 200px; /* 设置最后一个td的宽度为100像素 */
+    padding-left: 0;
 }
 
 
 a {
     text-decoration: none;
     color: #454545;
+
+    background: linear-gradient(to right, #ec695c, #61c454) no-repeat right bottom;
+    background-size: 0 2px;
+    transition: background-size 300ms;
+}
+
+a:hover {
+    background-position-x: left;
+    background-size: 100% 2px;
 }
 
 .upload-svg {
@@ -123,5 +138,6 @@ a {
 
 
 .option {
-    padding-right: 16px;
+    padding-right: 8px;
+    padding-left: 8px;
 }

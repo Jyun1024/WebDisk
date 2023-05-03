@@ -121,7 +121,8 @@ def file_view(_index_path=''):
         for relative_path in os.listdir(path):
             final_path = os.path.join(path, relative_path)
             href = relative_path + '/' if os.path.isdir(final_path) else relative_path
-            if href == '.chunk/': continue
+            if href == '.chunk/':
+                continue
             dir_content.append({
                 'href': href,
                 'type': Tools.gettype(final_path),
@@ -129,7 +130,8 @@ def file_view(_index_path=''):
                 'modify_time': Tools.getmtime(final_path)
             })
         dir_content.sort(key=lambda x: x["modify_time"], reverse=True)
-        index_of = ' > '.join(_index_path.strip('/').split('/'))
+        index_list = _index_path.strip('/').split('/')
+        index_of = {v: '/'.join(index_list[:i + 1]) for i, v in enumerate(index_list) if v}
         return render_template('index.html', dir_content=dir_content, index_of=index_of)
 
     elif os.path.isfile(path):
