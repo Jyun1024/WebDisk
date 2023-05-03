@@ -68,12 +68,23 @@ tr td:last-child {
 
 a {
     text-decoration: none;
+    color: #454545;
 }
 
 .upload-svg {
     box-shadow: 0 0 10px 10px #fff;
     border-radius: 10px;
     background: #fff;
+    animation: shadow 1s ease-in-out infinite alternate;
+}
+
+@keyframes shadow {
+    0% {
+        box-shadow: 0 0 4px 4px #fff;
+    }
+    100% {
+        box-shadow: 0 0 12px 12px #fff;
+    }
 }
 
 .netspeed-text {

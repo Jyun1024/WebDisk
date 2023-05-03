@@ -81,7 +81,7 @@ function CreateFileElement(file) {
     newRow.insertCell().textContent = `${file.name}`;
     newRow.insertCell().textContent = `${file.name.split(".").pop().toUpperCase()}文件`;
     newRow.insertCell().textContent = formatSize(file.size);
-    newRow.insertCell().textContent = file.lastModifiedDate.toJSON();
+    newRow.insertCell().textContent = file.lastModifiedDate.toJSON().replace('T', ' ').substring(0,19);
     // newRow.insertCell().textContent = file.lastModifiedDate.toLocaleString().replaceAll('/', '-');
     let optionCell = newRow.insertCell()
 
@@ -251,7 +251,7 @@ function getShareLink(item) {
 
 function formatSize(b) {
     if (b < 1024) {
-        return b.toFixed(2) + " bytes";
+        return b.toFixed(2) + " B";
     } else if (b < 1048576) {
         return (b / 1024).toFixed(2) + " KB";
     } else if (b < 1073741824) {

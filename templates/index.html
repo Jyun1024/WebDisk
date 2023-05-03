@@ -13,45 +13,12 @@
     <div>
         <div class="topbar">
             <div class="toolsbar">
-                <a href="../">
-                    <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12.9998 8L6 14L12.9998 21" stroke="#454545" stroke-width="3" stroke-linecap="round"
-                              stroke-linejoin="round"/>
-                        <path d="M6 14H28.9938C35.8768 14 41.7221 19.6204 41.9904 26.5C42.2739 33.7696 36.2671 40 28.9938 40H11.9984"
-                              stroke="#454545" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </a>
-
-                <a href="javascript:void(0)" onclick="mkdir()">
-                    <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5 8C5 6.89543 5.89543 6 7 6H19L24 12H41C42.1046 12 43 12.8954 43 14V40C43 41.1046 42.1046 42 41 42H7C5.89543 42 5 41.1046 5 40V8Z"
-                              fill="none" stroke="#454545" stroke-width="3" stroke-linejoin="round"/>
-                        <path d="M18 27H30" stroke="#454545" stroke-width="3" stroke-linecap="round"/>
-                        <path d="M24 21L24 33" stroke="#454545" stroke-width="3" stroke-linecap="round"/>
-                    </svg>
-                </a>
-
-                <div id="upload-div">
-                    <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <mask id="icon-b8ef6227f10b972" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48"
-                              style="mask-type: alpha">
-                            <path d="M48 0H0V48H48V0Z" fill="#454545"/>
-                        </mask>
-                        <g mask="url(#icon-b8ef6227f10b972)">
-                            <path d="M6 24.0083V42H42V24" stroke="#454545" stroke-width="3" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                            <path d="M33 15L24 6L15 15" stroke="#454545" stroke-width="3" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                            <path d="M23.9917 32V6" stroke="#454545" stroke-width="3" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </g>
-                    </svg>
-                </div>
+                <a href="../"> {% include "back.svg" %} </a>
+                <a href="javascript:void(0)" onclick="mkdir()"> {% include "mkdir.svg" %} </a>
+                <div id="upload-div"> {% include "upload-file.svg" %} </div>
                 <div id="location">
-                    位置 ：首页 {% if index_of %} > {{ index_of }} {% else %} {{ index_of }} {% endif %}
+                    位置 ：首页 {% if index_of %} > {{ index_of }}{% endif %}
                 </div>
-                {#        <text></text>#}
-
                 <input type="file" id="upload-input">
             </div>
             <div>
@@ -74,22 +41,9 @@
                     <td>
                         <div>
                             {% if file.type == "文件夹" %}
-                                <svg width="20" height="20" viewBox="0 0 48 48" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5 9C5 7.89543 5.89543 7 7 7H19L24 13H41C42.1046 13 43 13.8954 43 15V41C43 42.1046 42.1046 43 41 43H7C5.89543 43 5 42.1046 5 41V9Z"
-                                          fill="none" stroke="#454545" stroke-width="3" stroke-linejoin="round"/>
-                                </svg>&nbsp;<a href="{{ file.href }}">{{ file.href[:-1] }}</a>
-
+                                {% include "dir.svg" %}&nbsp;<a href="{{ file.href }}">{{ file.href[:-1] }}</a>
                             {% else %}
-
-                                <svg width="20" height="20" viewBox="0 0 48 48" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M10 44H38C39.1046 44 40 43.1046 40 42V14H30V4H10C8.89543 4 8 4.89543 8 6V42C8 43.1046 8.89543 44 10 44Z"
-                                          fill="none" stroke="#454545" stroke-width="3" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path d="M30 4L40 14" stroke="#454545" stroke-width="3" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                </svg>&nbsp;{{ file.href }}
+                                {% include "file.svg" %}&nbsp;{{ file.href }}
                             {% endif %}
                         </div>
                     </td>
@@ -99,22 +53,22 @@
                     <td>
                         <a href="{{ file.href }}" class="option">
                             {% if file.type == "文件夹" %}
-                                <img src="/static/option-svg/folder-open.svg" alt="">
+                                {% include "folder-open.svg" %}
                             {% else %}
-                                <img src="/static/option-svg/download.svg" alt="">
+                                {% include "download.svg" %}
                             {% endif %}
                         </a>
 
                         {% if file.type != "文件夹" %}
                             <a class="option" href="javascript:void(0)" data-item-id="{{ file.href }}"
                                onclick="getShareLink(this)">
-                                <img src="/static/option-svg/share.svg" alt="">
+                                {% include "share.svg" %}
                             </a>
                         {% endif %}
 
                         <a class="option" href="javascript:void(0)" data-item-id="{{ file.href }}"
                            onclick="deleteItem(this)">
-                            <img src="/static/option-svg/delete.svg" alt="">
+                            {% include "delete.svg" %}
                         </a>
                     </td>
                 </tr>

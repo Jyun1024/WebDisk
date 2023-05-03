@@ -17,11 +17,16 @@ from urllib.parse import quote
 from flask_httpauth import HTTPBasicAuth  # pip install flask_httpauth
 from flask import Flask, Response, render_template, request, jsonify
 
+# from jinja2 import FileSystemLoader, ChoiceLoader
+
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 auth = HTTPBasicAuth()
 
 USER_LIST = [('root', 'root.123')]  # 用户列表
+
+# 添加额外的Jinja2模板搜索路径
+app.jinja_loader.searchpath.append('./static/option-svg')
 
 RELATIVE_PATH = r'./FILES'
 BASE_DIR = os.path.abspath(RELATIVE_PATH)  # 用于浏览的文件夹
@@ -42,7 +47,7 @@ class Tools:
         size = 1024.0
         for i in range(len(units)):
             if (value / size) < 1:
-                return "%.2f%s" % (value, units[i])
+                return "%.2f %s" % (value, units[i])
             value = value / size
 
     @staticmethod
