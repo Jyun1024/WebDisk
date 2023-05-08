@@ -28,7 +28,7 @@ USER_LIST = [('root', 'root.123')]  # 用户列表
 # 添加额外的Jinja2模板搜索路径
 app.jinja_loader.searchpath.append('./static/option-svg')
 
-RELATIVE_PATH = r'./FILES'
+RELATIVE_PATH = 'FILES'
 BASE_DIR = os.path.abspath(RELATIVE_PATH)  # 用于浏览的文件夹
 
 SHARE_DICT = {}
@@ -69,6 +69,39 @@ class Tools:
         return os.path.splitext(path)[1].upper().strip('.') + '文件'
 
     @staticmethod
+    def search_folder(folder_path, target_name):
+        results = []  # 存储搜索结果的列表
+        for file_name in os.listdir(folder_path):  # 遍历文件夹中的每个文件和文件夹
+            full_path = os.path.join(folder_path, file_name)  # 获取完整路径
+            if os.path.isdir(full_path):  # 如果是文件夹
+                if target_name in file_name:  # 如果名称包含目标名称
+                    results.append(os.path.join(*Tools.split_file_path(full_path)[1:]))  # 将相对路径添加到结果列表中
+                else:  # 否则递归搜索子文件夹
+                    results.extend(Tools.search_folder(full_path, target_name))
+            elif os.path.isfile(full_path) and target_name in file_name:  # 如果是文件且名称包含目标名称
+                results.append(os.path.join(*Tools.split_file_path(full_path)[1:]))  # 将相对路径添加到结果列表中
+        return results
+
+    @staticmethod
+    def split_file_path(file_path):
+        """
+        将文件路径分割成列表
+        :param file_path: 文件路径
+        :return: 包含每一级文件夹名称和最后一个文件或文件夹名称的列表
+        """
+        path_parts = []
+        while True:
+            file_path, folder = os.path.split(file_path)
+            if folder != "":
+                path_parts.append(folder)
+            else:
+                if file_path != "":
+                    path_parts.append(file_path)
+                break
+        path_parts.reverse()
+        return path_parts
+
+    @staticmethod
     def file_response(path):
         def send_chunk():  # 流式读取
             with open(path, 'rb') as target_file:
@@ -83,6 +116,24 @@ class Tools:
         response.headers["Content-Disposition"] = f'attachment; filename={filename}'
         response.headers["Content-Length"] = str(os.path.getsize(path))
         return response
+
+    @staticmethod
+    def dir_response(files_list, abs_path=BASE_DIR, index_of=dict({})):
+        dir_content = []
+        for relative_path in files_list:
+            final_path = os.path.join(abs_path, relative_path)
+            href = relative_path + '/' if os.path.isdir(final_path) else relative_path
+            if '.chunk/' in href or '.chunk\\' in href:
+                continue
+            dir_content.append({
+                'href': href,
+                'type': Tools.gettype(final_path),
+                'size': Tools.getsize(final_path),
+                'modify_time': Tools.getmtime(final_path)
+            })
+        dir_content.sort(key=lambda x: x["modify_time"], reverse=True)
+
+        return render_template('index.html', dir_content=dir_content, index_of=index_of)
 
 
 @app.route('/share', methods=['POST'])
@@ -114,33 +165,25 @@ def share_links(shareid=None):
 @app.route('/<path:_index_path>')
 @auth.login_required
 def file_view(_index_path=''):
-    index_path = os.path.join(*_index_path.split('/'))
-    path = os.path.join(BASE_DIR, index_path)
-    if os.path.isdir(path):  # 如果是文件夹
-        dir_content = []
-        for relative_path in os.listdir(path):
-            final_path = os.path.join(path, relative_path)
-            href = relative_path + '/' if os.path.isdir(final_path) else relative_path
-            if href == '.chunk/':
-                continue
-            dir_content.append({
-                'href': href,
-                'type': Tools.gettype(final_path),
-                'size': Tools.getsize(final_path),
-                'modify_time': Tools.getmtime(final_path)
-            })
-        dir_content.sort(key=lambda x: x["modify_time"], reverse=True)
-        index_list = _index_path.strip('/').split('/')
-        index_of = {v: '/'.join(index_list[:i + 1]) for i, v in enumerate(index_list) if v}
-        return render_template('index.html', dir_content=dir_content, index_of=index_of)
+    abs_path = os.path.join(BASE_DIR, os.path.join(*_index_path.split('/')))
 
-    elif os.path.isfile(path):
-        return Tools.file_response(path)
-    else:
-        if request.args.get('opt') == 'newfolder':
-            os.makedirs(path)
-            return 'ok'
-        return '404 Not Found'
+    if request.args.get('opt') == 'newfolder':  # 新建文件夹
+        os.makedirs(abs_path)
+        return 'ok'
+    search_key = request.args.get('search')
+    if search_key:  # 搜索
+        index_of = {f'搜索:{search_key}': f'?search={search_key}'}
+        return Tools.dir_response(Tools.search_folder(RELATIVE_PATH, search_key), index_of=index_of)
+
+    if os.path.isdir(abs_path):  # 判断请求路径是否为文件夹
+        _index_list = _index_path.strip('/').split('/')
+        index_of = {v: '/'.join(_index_list[:i + 1]) + '/' for i, v in enumerate(_index_list) if v}
+        return Tools.dir_response(os.listdir(abs_path), abs_path, index_of)
+
+    if os.path.isfile(abs_path):
+        return Tools.file_response(abs_path)
+
+    return '404 Not Found'
 
 
 @auth.verify_password

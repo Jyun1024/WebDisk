@@ -76,45 +76,39 @@ a {
     text-decoration: none;
     color: #454545;
 
-    background: linear-gradient(to right, #ec695c, #61c454) no-repeat right bottom;
+    background: linear-gradient(#454545, #454545) no-repeat bottom;
     background-size: 0 2px;
     transition: background-size 300ms;
 }
 
 a:hover {
-    background-position-x: left;
     background-size: 100% 2px;
 }
 
 .upload-svg {
-    box-shadow: 0 0 10px 10px #fff;
-    border-radius: 10px;
-    background: #fff;
-    animation: shadow 1s ease-in-out infinite alternate;
+    background: linear-gradient(#454545, #454545) no-repeat bottom;
+    background-size: 0 2px;
+    animation: bd 600ms ease-in-out infinite alternate;
 }
 
-@keyframes shadow {
+
+@keyframes bd {
     0% {
-        box-shadow: 0 0 4px 4px #fff;
+        background-size: 0 2px;
     }
     100% {
-        box-shadow: 0 0 12px 12px #fff;
+        background-size: 100% 2px;
     }
 }
+
 
 .netspeed-text {
     color: #454545;
 }
 
+
 .toolsbar {
     display: flex;
-    /*flex-direction: row;*/
-    /*font-weight: bold;*/
-    /*justify-content: space-between*/
-}
-
-
-.toolsbar {
     padding-top: 6px;
     padding-bottom: 6px;
 }
@@ -122,12 +116,6 @@ a:hover {
 .toolsbar > * {
     padding-left: 10px;
     padding-right: 10px;
-    /*border: 1px solid #ddd;*/
-    /*color: #454545;*/
-    /*margin: 4px;*/
-    /*border-radius: 4px;*/
-    /*padding: 2px 4px 0 4px;*/
-
 }
 
 .topbar {
@@ -141,3 +129,58 @@ a:hover {
     padding-right: 8px;
     padding-left: 8px;
 }
+
+
+#version {
+    position: absolute;
+    top: 6px;
+    right: 28px;
+    font-size: 12px;
+    color: #dddddd;
+}
+
+
+/*---------------------------*/
+
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    position: relative;
+}
+
+.input {
+    border-style: none;
+    width: 0;
+    outline: none;
+    transition: .5s ease-in-out;
+    padding-right: 40px;
+    color: #454545;
+    font-size: 16px;
+}
+
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 4px;
+    cursor: pointer;
+    border-style: none;
+    pointer-events: painted;
+    background-color: transparent;
+    transition: .2s linear;
+}
+
+.icon:focus ~ .input,
+.input:focus {
+    box-shadow: none;
+    width: 250px;
+    background-color: transparent;
+    border-bottom: 1px solid #a2a2a2;
+}
+
+

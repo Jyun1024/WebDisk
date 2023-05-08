@@ -8,6 +8,8 @@
 
 const container = document.querySelector('#container');// 获取拖动上传区域
 // const uploadDiv = document.getElementById("upload-div");
+const searchForm = document.getElementById('search-form');
+const searchInput = searchForm.querySelector('input');
 const uploadInput = document.getElementById("upload-input");
 const filesList = document.querySelector('#container table tbody');// 获取文件列表区域
 // const netspeedNode = document.querySelector('#network-speed');// 获取网速显示text
@@ -36,6 +38,16 @@ allLinks.forEach(link => {
 //     uploadInput.click();
 // });
 
+
+searchForm.addEventListener("submit", (e) => {
+    const formData = new FormData(searchForm);
+    if (!formData.get('search')) {
+        e.preventDefault()
+        searchInput.focus()
+
+    }
+
+});
 
 uploadInput.addEventListener("change", () => {
     const file = uploadInput.files[0];
