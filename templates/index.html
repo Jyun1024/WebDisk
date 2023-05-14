@@ -11,6 +11,7 @@
 <body>
 <div id="container">
     <div>
+
         <div class="topbar">
             <div class="toolsbar">
                 <a href="../"> {% include "back.svg" %} </a>
@@ -37,15 +38,6 @@
 
             <div id="version">
                 Version 1.2.3
-            </div>
-            <div class="net-status">
-                {% include "net.svg" %}
-                <div id="net-status">
-                    &nbsp;<text>4G</text>
-                    &emsp;<text>⇅ 3.1 Mb/s</text>
-                    &emsp;<text>RTT：100ms</text>
-                </div>
-
             </div>
         </div>
         <div class="table-div">
@@ -94,8 +86,17 @@
                 </tbody>
             </table>
         </div>
+        <div class="status-bar">
+            <div class="net-status">
+                {% include "net.svg" %}
+                <div id="net-status">
+                    &nbsp;<text>4G</text>
+                    &emsp;<text>⇅ 3.1 Mb/s</text>
+                    &emsp;<text>RTT：100ms</text>
+                </div>
+            </div>
+        </div>
     </div>
-
 </div>
 <script src="/static/index.js"></script>
 </body>
