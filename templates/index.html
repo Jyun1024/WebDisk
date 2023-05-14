@@ -35,53 +35,55 @@
             </form>
 
             <div id="version">
-                Version 1.2.1
+                Version 1.2.2
             </div>
         </div>
-        <table>
-            <thead>
-            <tr>
-                <th>文件名</th>
-                <th>类型</th>
-                <th>大小</th>
-                <th>修改日期</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for file in dir_content %}
+        <div class="table-div">
+            <table>
+                <thead>
                 <tr>
-                    <td>
-                        <div>
-                            {% if file.type == "文件夹" %}
-                                {% include "dir.svg" %}&nbsp;<a href="{{ file.href }}">{{ file.href[:-1] }}</a>
-                            {% else %}
-                                {% include "file.svg" %}&nbsp;{{ file.href }}
-                            {% endif %}
-                        </div>
-                    </td>
-                    <td>{{ file.type }}</td>
-                    <td>{{ file.size }}</td>
-                    <td>{{ file.modify_time }}</td>
-                    <td>
-
-                        {% if file.type == "文件夹" %}
-                            <a href="{{ file.href }}" class="option">{% include "folder-open.svg" %}</a>
-                        {% else %}
-                            <a href="{{ file.href }}" class="option">{% include "download.svg" %}</a>
-                            <a class="option" href="javascript:void(0)" data-item-id="{{ file.href }}"
-                               onclick="getShareLink(this)">{% include "share.svg" %}</a>
-                        {% endif %}
-
-                        <a class="option" href="javascript:void(0)" data-item-id="{{ file.href }}"
-                           onclick="deleteItem(this)">
-                            {% include "delete.svg" %}
-                        </a>
-                    </td>
+                    <th>文件名</th>
+                    <th>类型</th>
+                    <th>大小</th>
+                    <th>修改日期</th>
+                    <th>操作</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for file in dir_content %}
+                    <tr>
+                        <td>
+                            <div>
+                                {% if file.type == "文件夹" %}
+                                    {% include "dir.svg" %}&nbsp;<a href="{{ file.href }}">{{ file.href[:-1] }}</a>
+                                {% else %}
+                                    {% include "file.svg" %}&nbsp;{{ file.href }}
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td>{{ file.type }}</td>
+                        <td>{{ file.size }}</td>
+                        <td>{{ file.modify_time }}</td>
+                        <td>
+
+                            {% if file.type == "文件夹" %}
+                                <a href="{{ file.href }}" class="option">{% include "folder-open.svg" %}</a>
+                            {% else %}
+                                <a href="{{ file.href }}" class="option">{% include "download.svg" %}</a>
+                                <a class="option" href="javascript:void(0)" data-item-id="{{ file.href }}"
+                                   onclick="getShareLink(this)">{% include "share.svg" %}</a>
+                            {% endif %}
+
+                            <a class="option" href="javascript:void(0)" data-item-id="{{ file.href }}"
+                               onclick="deleteItem(this)">
+                                {% include "delete.svg" %}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </div>
