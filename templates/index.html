@@ -25,6 +25,7 @@
                 <input type="file" id="upload-input">
             </div>
 
+
             <form action="/" id="search-form" class="input-wrapper" autocomplete="off">
                 <button class="icon line" type="submit">
                     {% include "search.svg" %}
@@ -35,7 +36,16 @@
             </form>
 
             <div id="version">
-                Version 1.2.2
+                Version 1.2.3
+            </div>
+            <div class="net-status">
+                {% include "net.svg" %}
+                <div id="net-status">
+                    &nbsp;<text>4G</text>
+                    &emsp;<text>⇅ 3.1 Mb/s</text>
+                    &emsp;<text>RTT：100ms</text>
+                </div>
+
             </div>
         </div>
         <div class="table-div">

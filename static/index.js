@@ -12,7 +12,7 @@ const searchForm = document.getElementById('search-form');
 const searchInput = searchForm.querySelector('input');
 const uploadInput = document.getElementById("upload-input");
 const filesList = document.querySelector('#container table tbody');// 获取文件列表区域
-// const netspeedNode = document.querySelector('#network-speed');// 获取网速显示text
+const netStatusNode = document.getElementById('net-status');// 获取网速显示text
 const allLinks = document.querySelectorAll('a');
 
 const CHUNK_SIZE = 1024 * 1024; // 每个分片的大小，这里设置为1MB
@@ -96,6 +96,9 @@ container.addEventListener('drop', (e) => {
     }
 })
 
+
+navigator.connection.addEventListener('change', updateNetworkStatus)  // 监听网络状态变化
+setInterval(updateNetworkStatus, 1000)  // 每秒更新一次网速
 
 function CreateFileElement(file) {
     // 向tbody中插入一个新的tr元素，并将其插入到顶部
@@ -299,3 +302,33 @@ function copyText(text) {
     document.execCommand("copy");
     document.body.removeChild(textarea);
 }
+
+
+function getNetworkInfo() {
+    let info;
+    if (navigator.onLine) {
+        info = {
+            type: navigator.connection.effectiveType,
+            rtt: navigator.connection.rtt,
+            downlink: navigator.connection.downlink,
+        };
+    } else {
+        info = {
+            type: 'offline',
+            rtt: 0,
+            downlink: 0,
+        };
+    }
+    return info;
+}
+
+function updateNetworkStatus() {
+    let networkType = netStatusNode.children[0]
+    let networkSpeed = netStatusNode.children[1]
+    let networkRtt = netStatusNode.children[2]
+    let networkInfo = getNetworkInfo()
+    networkType.textContent = networkInfo.type.toUpperCase()
+    networkSpeed.textContent = `⇅ ${networkInfo.downlink}Mb/s`
+    networkRtt.textContent = `RTT：${networkInfo.rtt}ms`
+}
+
