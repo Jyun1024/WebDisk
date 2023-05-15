@@ -1,3 +1,11 @@
+/* 让所有元素的内容都不可选中 */
+* {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* 标准语法 */
+}
+
 body {
     background-color: #e8e8e8;
     font-family: Arial, sans-serif;

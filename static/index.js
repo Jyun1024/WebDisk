@@ -18,7 +18,7 @@ const allLinks = document.querySelectorAll('a');
 const CHUNK_SIZE = 1024 * 1024; // 每个分片的大小，这里设置为1MB
 
 let WORKLOAD = 0
-
+let NOW_ITEM
 
 // 遍历所有 a 标签，为其添加点击事件监听器
 allLinks.forEach(link => {
@@ -33,22 +33,16 @@ allLinks.forEach(link => {
     });
 });
 
-
-// uploadDiv.addEventListener("click", () => {
-//     uploadInput.click();
-// });
-
-
+// 文件搜索
 searchForm.addEventListener("submit", (e) => {
     const formData = new FormData(searchForm);
     if (!formData.get('search')) {
         e.preventDefault()
         searchInput.focus()
-
     }
-
 });
 
+// 文件上传 START
 uploadInput.addEventListener("change", () => {
     const file = uploadInput.files[0];
     if (!file) return
@@ -59,13 +53,17 @@ uploadInput.addEventListener("change", () => {
 
 
 container.addEventListener('dragenter', (e) => { // 拖入时触发
-    container.classList.add('hover');
-    e.preventDefault();
+    if (e.dataTransfer.types.includes('Files')) {
+        container.classList.add('hover');
+        e.preventDefault();
+    }
 })
 
 container.addEventListener('dragover', (e) => {  // 当元素正在被拖动时持续触发。
-    container.classList.add('hover');
-    e.preventDefault();
+    if (e.dataTransfer.types.includes('Files')) {
+        container.classList.add('hover');
+        e.preventDefault();
+    }
 })
 
 container.addEventListener('dragleave', (e) => {  // 当元素被拖出时触发。
@@ -95,10 +93,45 @@ container.addEventListener('drop', (e) => {
         }
     }
 })
+// 文件上传 END
 
+// 文件移动 START
+const filesTbody = document.getElementById('files-tbody')
+const filesPathDiv = document.getElementById('location')
+filesTbody.ondragstart = (e) => {
+    e.dataTransfer.effectAllowed = 'move'
+    NOW_ITEM = e.target.dataset.item
+}
+filesPathDiv.ondragstart = (e) => {
+    e.dataTransfer.effectAllowed = 'move'
+    NOW_ITEM = e.target.dataset.item
+}
+
+filesTbody.ondragover = (e) => {
+    e.preventDefault()
+}
+filesPathDiv.ondragover = (e) => {
+    e.preventDefault()
+}
+
+filesTbody.ondrop = (e) => {
+    const tr = e.target.closest('tr')
+    if (tr.dataset.drop && NOW_ITEM) {
+        console.log('move', NOW_ITEM, 'to', tr.dataset.item)
+        moveFile(NOW_ITEM, tr.dataset.item)
+    }
+}
+
+filesPathDiv.ondrop = (e) => {
+    console.log('move', NOW_ITEM, 'to', e.target.getAttribute('href'))
+    if (NOW_ITEM && e.target.getAttribute('href')) {
+        moveFile(NOW_ITEM, '', e.target.getAttribute('href'))
+    }
+}
+// 文件移动 END
 
 navigator.connection.addEventListener('change', updateNetworkStatus)  // 监听网络状态变化
-setInterval(updateNetworkStatus, 1000)  // 每秒更新一次网速
+setInterval(updateNetworkStatus, 10000)  // 每10秒更新一次网络状况
 
 function CreateFileElement(file) {
     // 向tbody中插入一个新的tr元素，并将其插入到顶部
@@ -259,6 +292,16 @@ function mkdir() {
             if (msg === 'ok') location.reload()
         });
     }
+}
+
+function moveFile(file, toDir, path = '') {
+    const f = window.location.pathname + file
+    const dir = toDir ? window.location.pathname + toDir : path
+
+    fetch(`?opt=move&file=${f}&to=${dir}`).then((resp) => resp.text()).then((msg) => {
+        if (msg === 'ok') location.reload()
+    });
+
 }
 
 function getShareLink(item) {

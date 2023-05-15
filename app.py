@@ -170,17 +170,25 @@ def file_view(_index_path=''):
     if request.args.get('opt') == 'newfolder':  # 新建文件夹
         os.makedirs(abs_path)
         return 'ok'
-    search_key = request.args.get('search')
+    if request.args.get('opt') == 'move':  # 移动文件
+        src = os.path.join(BASE_DIR, request.args.get('file').strip('/'))
+        dst = os.path.join(BASE_DIR, request.args.get('to').strip('/'))
+        try:
+            shutil.move(os.path.abspath(src), os.path.abspath(dst))
+        except shutil.Error:
+            pass
+        return 'ok'
+    search_key = request.args.get('search')  # 搜索关键字
     if search_key:  # 搜索
         index_of = {f'搜索:{search_key}': f'?search={search_key}'}
         return Tools.dir_response(Tools.search_folder(RELATIVE_PATH, search_key), index_of=index_of)
 
-    if os.path.isdir(abs_path):  # 判断请求路径是否为文件夹
+    if os.path.isdir(abs_path):  # 打开文件夹
         _index_list = _index_path.strip('/').split('/')
         index_of = {v: '/'.join(_index_list[:i + 1]) + '/' for i, v in enumerate(_index_list) if v}
         return Tools.dir_response(os.listdir(abs_path), abs_path, index_of)
 
-    if os.path.isfile(abs_path):
+    if os.path.isfile(abs_path):  # 文件下载
         return Tools.file_response(abs_path)
 
     return '404 Not Found'

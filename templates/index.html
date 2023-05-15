@@ -37,7 +37,7 @@
             </form>
 
             <div id="version">
-                Version 1.2.3
+                Version 1.2.4
             </div>
         </div>
         <div class="table-div">
@@ -51,9 +51,10 @@
                     <th>操作</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="files-tbody">
                 {% for file in dir_content %}
-                    <tr>
+                    <tr data-item="{{ file.href }}" {% if file.type == "文件夹" %} data-drop="true" {% else %}
+                        draggable="true" {% endif %}>
                         <td>
                             <div>
                                 {% if file.type == "文件夹" %}
