@@ -77,9 +77,9 @@ td > div {
 td {
     border-top: 1px solid #e8e8e8;
 }
-tbody > tr{
+/*tbody > tr{
     border-radius: 8px;
-}
+}*/
 
 tbody > tr:hover {
     background-color: #e9e8e8;
