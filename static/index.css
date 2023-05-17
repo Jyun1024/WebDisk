@@ -31,7 +31,7 @@ body {
 }
 
 #container.hover {
-    box-shadow: inset 0 0 20px 6px #619ec8;
+    box-shadow: inset 0 0 20px 6px deepskyblue;
 }
 
 #upload-div {
@@ -75,14 +75,25 @@ td > div {
 }
 
 td {
-    border-top: 1px solid #e8e8e8;
+    /*border-top: 1px solid #e8e8e8;*/
 }
-/*tbody > tr{
-    border-radius: 8px;
-}*/
+
+tbody > tr {
+    border-top: 1px solid #e8e8e8;
+    /*border-left: 1px solid #fff0;*/
+    /*border-right: 1px solid #fff0;*/
+    /*background: linear-gradient(#ddd,deepskyblue) no-repeat left top;*/
+    /*background-size: 2px 0;*/
+    /*transition: background-size 350ms;*/
+}
 
 tbody > tr:hover {
-    background-color: #e9e8e8;
+    /*background-color: #e9e8e8;*/
+    box-shadow: 0 0 16px 0 rgba(0, 0, 0, .1);
+    /*border-left: 1px solid #e8e8e8;*/
+    /*border-right: 1px solid #e8e8e8;*/
+    background: linear-gradient(#ddd, deepskyblue) no-repeat left bottom;
+    background-size: 2px 100%;
 }
 
 tr td:last-child {
