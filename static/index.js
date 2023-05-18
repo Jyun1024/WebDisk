@@ -14,6 +14,8 @@ const uploadInput = document.getElementById("upload-input");
 const filesList = document.querySelector('#container table tbody');// 获取文件列表区域
 const netStatusNode = document.getElementById('net-status');// 获取网速显示text
 const allLinks = document.querySelectorAll('a');
+const trList = document.querySelectorAll('tr.dir'); // 选择所有文件夹 tr 元素
+
 
 const CHUNK_SIZE = 1024 * 1024; // 每个分片的大小，这里设置为1MB
 
@@ -33,6 +35,14 @@ allLinks.forEach(link => {
     });
 });
 
+
+trList.forEach(function (tr) { // 遍历每个 tr 元素
+    tr.addEventListener('click', function () {
+        window.location.href = this.getAttribute('data-item');
+    });
+});
+
+
 // 文件搜索
 searchForm.addEventListener("submit", (e) => {
     const formData = new FormData(searchForm);
@@ -43,7 +53,16 @@ searchForm.addEventListener("submit", (e) => {
 });
 
 // 文件上传 START
-uploadInput.addEventListener("change", () => {
+document.addEventListener('paste', (e) => { // 粘贴事件
+    const fileList = e.clipboardData.files;
+    for (const file of fileList) {
+        WORKLOAD++
+        CreateFileElement(file)
+    }
+})
+
+
+uploadInput.addEventListener("change", () => {  // 选择文件后触发
     const file = uploadInput.files[0];
     if (!file) return
     console.log(file);
@@ -143,7 +162,8 @@ function CreateFileElement(file) {
     // newRow.style.boxShadow = '0px 0px 4px 0px rgb(126, 126, 118)'
 
     // 在新的tr元素中插入两个新的td元素
-    newRow.insertCell().textContent = `${file.name}`;
+    newRow.insertCell().innerHTML = `<div><img class="file-svg" src="/static/option-svg/file.svg">&nbsp;${file.name}</div>`
+    // newRow.insertCell().textContent = `${file.name}`;
     newRow.insertCell().textContent = `${file.name.split(".").pop().toUpperCase()}文件`;
     newRow.insertCell().textContent = formatSize(file.size);
     newRow.insertCell().textContent = file.lastModifiedDate.toJSON().replace('T', ' ').substring(0, 19);

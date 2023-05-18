@@ -102,6 +102,11 @@ tr td:last-child {
 }
 
 
+tr.dir:hover { /* 鼠标悬停在文件夹上时 */
+    cursor: pointer; /* 鼠标变成手指 */
+}
+
+
 a, .line {
     text-decoration: none;
     color: #454545;
