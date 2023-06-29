@@ -126,6 +126,15 @@ a:hover, .line:hover {
     animation: bd 600ms ease-in-out infinite alternate;
 }
 
+.upload-btn {
+    background-color: #fff;
+    border-radius: 6px;
+    font-size: 14px;
+    padding: 6px 16px;
+}
+
+}
+
 
 @keyframes bd {
     0% {

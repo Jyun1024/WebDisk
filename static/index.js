@@ -172,8 +172,10 @@ function CreateFileElement(file) {
 
     let uploadBtn = document.createElement('a')
     // uploadBtn.text = '开始上传'
-    uploadBtn.innerHTML = '<img class="upload-svg" src="/static/option-svg/upload.svg">'
+    uploadBtn.innerText = '开始上传'
+    // uploadBtn.innerHTML = '<img class="upload-svg" src="/static/option-svg/upload.svg">'
     uploadBtn.classList.add('option')
+    uploadBtn.classList.add('upload-btn')
     uploadBtn.href = "javascript:void(0)"
     uploadBtn.onclick = () => {
         // console.log('上传文件')
