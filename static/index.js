@@ -38,7 +38,9 @@ allLinks.forEach(link => {
 
 trList.forEach(function (tr) { // 遍历每个 tr 元素
     tr.addEventListener('click', function () {
-        window.location.href = this.getAttribute('data-item');
+        if (!WORKLOAD) {
+            window.location.href = this.getAttribute('data-item');
+        }
     });
 });
 
