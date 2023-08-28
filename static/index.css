@@ -51,7 +51,7 @@ body {
 }
 
 .table-div {
-    height: 88vh;
+    height: 87vh;
     overflow-y: auto;
     padding-left: 8px;
     padding-right: 8px;
@@ -131,8 +131,6 @@ a:hover, .line:hover {
     border-radius: 6px;
     font-size: 14px;
     padding: 6px 16px;
-}
-
 }
 
 
